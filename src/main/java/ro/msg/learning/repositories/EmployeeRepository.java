@@ -13,10 +13,4 @@ import java.util.Set;
 @RepositoryRestResource
 public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
-    Employee findEmployeeByFirstName(@Param("firstName") String firstName);
-
-    List<Employee> findEmployeesByFirstName(@Param("firstName") String firstName);
-
-    void save(Set<ProductLocationRelationship> productLocationRelationships);
-
 }

@@ -10,5 +10,4 @@ import ro.msg.learning.entities.ProductLocationRelationship;
 public interface OrderStrategy {
 
     Set<ProductLocationRelationship> handleOrders(OrderDTO orderdto);
-
 }

@@ -7,6 +7,8 @@ import ro.msg.learning.dtos.OrderDetailsDTO;
 import ro.msg.learning.entities.Address;
 import ro.msg.learning.entities.Location;
 import ro.msg.learning.entities.ProductLocationRelationship;
+import ro.msg.learning.models.DistanceObject;
+import ro.msg.learning.repositories.AddressRepository;
 import ro.msg.learning.repositories.ProductLocationRelationshipRepository;
 
 import java.util.ArrayList;
@@ -18,11 +20,13 @@ import java.util.Set;
 public class ProximityStrategy implements OrderStrategy {
 
     private final ProductLocationRelationshipRepository productLocationRelationshipRepository;
+    private final AddressRepository addressRepository;
     private DistanceComputation distanceComputation;
 
     @Autowired
-    public ProximityStrategy(ProductLocationRelationshipRepository productLocationRelationshipRepository, DistanceComputation distanceComputation) {
+    public ProximityStrategy(ProductLocationRelationshipRepository productLocationRelationshipRepository, AddressRepository addressRepository, DistanceComputation distanceComputation) {
         this.productLocationRelationshipRepository = productLocationRelationshipRepository;
+        this.addressRepository = addressRepository;
         this.distanceComputation = distanceComputation;
     }
 
@@ -35,15 +39,21 @@ public class ProximityStrategy implements OrderStrategy {
             products.add(product.getProduct().getProductId());
         }
         Set<Location> locations = productLocationRelationshipRepository.loadAllLocations(products);
+        Address shipAddress = addressRepository.findAddressByLocationStreetName(orderdto.getShipAddress());
+        Location shipLocation = new Location();
+        shipLocation.setStreetName(orderdto.getShipAddress());
+        shipAddress.setLocation(shipLocation);
 
         for(Location location : locations){
             Address cityCountry = new Address();
             cityCountry.setCity(location.getAddress().getCity());
             cityCountry.setCountry(location.getAddress().getCountry());
+            cityCountry.setLocation(location);
             addresses.add(cityCountry);
         }
 
-        distanceComputation.computeDistance(orderdto.getShipAddress(), addresses);
+        List<DistanceObject> distanceObjectList = distanceComputation.processResponse(shipAddress, addresses);
+        
 
         return productLocationRelationships;
     }

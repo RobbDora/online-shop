@@ -10,7 +10,6 @@ import java.util.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import ro.msg.learning.dtos.OrderDTO;
 import ro.msg.learning.dtos.OrderDetailsDTO;
-import ro.msg.learning.dtos.ProductLocationRelationshipDTO;
 import ro.msg.learning.entities.ProductLocationRelationship;
 import ro.msg.learning.repositories.ProductLocationRelationshipRepository;
 

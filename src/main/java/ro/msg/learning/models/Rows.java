@@ -1,12 +1,17 @@
 package ro.msg.learning.models;
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
 
 import java.util.List;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class Rows {
 
+    @JsonProperty("elements")
     private List<Element> elementList;
 
 }

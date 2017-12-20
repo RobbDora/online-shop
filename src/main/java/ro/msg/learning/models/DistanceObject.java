@@ -1,18 +1,17 @@
 package ro.msg.learning.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
-import ro.msg.learning.entities.Address;
-import ro.msg.learning.models.types.TopLevelStatus;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @Data
 public class DistanceObject {
 
+    @JsonProperty("OriginAddress")
     private String originAddress;
 
+    @JsonProperty("DestinationAddress")
     private String destinationAddress;
 
-    private long distance;
+    @JsonProperty("Distance")
+    private String distance;
 }

@@ -37,7 +37,7 @@
 //import ro.msg.learning.entities.Product;
 //import ro.msg.learning.entities.User;
 //import ro.msg.learning.entities.UserRole;
-//import ro.msg.learning.security.AuthorizationServerConfig;
+//import ro.msg.learning.configurations.AuthorizationServerConfig;
 //
 ///**
 // *

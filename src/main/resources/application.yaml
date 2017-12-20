@@ -15,8 +15,11 @@ spring:
     jpa.hibernate:
         show-sql: true
         ddl-auto: validate
-onlineshop.strategy:
-    type: PROXIMITY
+onlineshop:
+    strategy:
+        type: PROXIMITY
+    distance:
+        type: GOOGLE
 server:
     context-path: /onlineshop
     spring.jpa.properties.hibernate.type: trace

@@ -1,4 +1,4 @@
-package ro.msg.learning.security;
+package ro.msg.learning.configurations;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;

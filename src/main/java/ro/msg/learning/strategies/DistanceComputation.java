@@ -4,9 +4,10 @@ import ro.msg.learning.entities.Address;
 import ro.msg.learning.models.DistanceObject;
 
 import java.util.List;
+import java.util.Set;
 
 public interface DistanceComputation {
 
-    DistanceObject computeDistance(String shipAddress, List<Address> location);
+    List<DistanceObject> processResponse(Address shipAddress, List<Address> location);
 
 }

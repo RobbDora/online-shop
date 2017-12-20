@@ -12,12 +12,5 @@ import java.util.List;
 @RepositoryRestResource
 public interface CustomerRepository extends CrudRepository<Customer, String>{
 
-    Customer findByAddress(@Param("address") String address);
-
-    List<Customer> findCustomersByCompanyName(@Param("companyName") String companyName);
-
-    List<Customer> findCustomersByAddress(@Param("address") String address);
-
-    List<Customer> findCustomersByOrders(@Param("orders") List<Order> orders);
 
 }

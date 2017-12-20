@@ -1,14 +1,15 @@
 package ro.msg.learning.strategies;
 
-import org.springframework.http.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.client.RestTemplate;
 import ro.msg.learning.entities.Address;
-import ro.msg.learning.models.GoogleDistanceObject;
 import ro.msg.learning.models.DistanceObject;
+import ro.msg.learning.models.GoogleDistanceObject;
 
-import java.util.List;
+import java.util.*;
 
 
+@Slf4j
 public class AbstractGoogleDistance implements DistanceComputation{
 
     private final RestTemplate restTemplate;
@@ -22,17 +23,22 @@ public class AbstractGoogleDistance implements DistanceComputation{
     }
 
     @Override
-    public DistanceObject computeDistance(String shipAddress, List<Address> location) {
-        DistanceObject distanceObject = new DistanceObject();
-        HttpHeaders headers = new HttpHeaders();
-        headers.set("Accept", MediaType.APPLICATION_JSON_VALUE);
-        HttpEntity<String> entity = new HttpEntity<>(headers);
+    public List<DistanceObject> processResponse(Address shipAddress, List<Address> destinations) {
+        List<DistanceObject> distanceObjectList = new ArrayList<>();
 
-        ResponseEntity<GoogleDistanceObject> googleResponse = restTemplate.exchange(url, HttpMethod.GET, entity, GoogleDistanceObject.class, shipAddress + ",", location.get(0).getCity() + "," + location.get(0).getCountry(), apiKey);
-        parseResponse(googleResponse.getBody());
+        for(Address destinationAddress : destinations) {
 
-        return distanceObject;
+            DistanceObject distanceObject = new DistanceObject();
+            GoogleDistanceObject googleResponse = restTemplate.getForObject(url, GoogleDistanceObject.class, shipAddress.getLocation().getStreetName() + "," + shipAddress.getCity() + "," + shipAddress.getCountry() + ",", destinationAddress.getLocation().getStreetName() + "," + destinationAddress.getCity() + "," + destinationAddress.getCountry(), apiKey);
+            distanceObject.setDestinationAddress(googleResponse.getDestinationAddresses().get(0));
+            distanceObject.setOriginAddress(googleResponse.getOriginAddresses().get(0));
+            distanceObject.setDistance(googleResponse.getRows().get(0).getElementList().get(0).getDistance().getText());
+            distanceObjectList.add(distanceObject);
+
+        }
+        distanceObjectList.sort(Comparator.comparing(DistanceObject::getDistance));
+
+        return distanceObjectList;
     }
-
 }
 

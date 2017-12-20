@@ -1,17 +1,29 @@
 package ro.msg.learning.models;
 
 
-import lombok.Data;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.*;
+import ro.msg.learning.models.types.TopLevelStatus;
 
+import java.util.ArrayList;
 import java.util.List;
 
-@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class GoogleDistanceObject {
 
-    private List<String> destinationAddresses;
+    @JsonProperty("destination_addresses")
+    private List<String> destinationAddresses= new ArrayList<>();
 
-    private List<String> originAddresses;
+    @JsonProperty("origin_addresses")
+    private List<String> originAddresses= new ArrayList<>();
 
-    private List<Rows> rows;
+    @JsonProperty("rows")
+    private List<Rows> rows = new ArrayList<>();
+
+    @JsonProperty("status")
+    private TopLevelStatus status;
 
 }

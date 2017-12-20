@@ -22,6 +22,9 @@ public class Address {
     @JsonProperty("Country")
     private String country;
 
+    @OneToOne(mappedBy = "address", cascade = CascadeType.ALL)
+    private Location location;
+
     @OneToMany(mappedBy = "address")
     @JsonProperty("Customer")
     private List<Customer> customer = new ArrayList<>();

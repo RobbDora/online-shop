@@ -1,5 +1,6 @@
-package ro.msg.learning.configuration;
+package ro.msg.learning.configurations;
 
+import ro.msg.learning.repositories.AddressRepository;
 import ro.msg.learning.strategies.*;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
@@ -11,13 +12,15 @@ import ro.msg.learning.strategies.types.StrategyType;
 public class GlobalConfig {
 
     private final ProductLocationRelationshipRepository productLocationRelationshipRepository;
+    private final AddressRepository addressRepository;
     private final DistanceComputation distanceComputation;
 
     @Value("${onlineshop.strategy.type}")
     private StrategyType strategyType;
 
-    public GlobalConfig(ProductLocationRelationshipRepository productLocationRelationshipRepository, DistanceComputation distanceComputation) {
+    public GlobalConfig(ProductLocationRelationshipRepository productLocationRelationshipRepository, AddressRepository addressRepository, DistanceComputation distanceComputation) {
         this.productLocationRelationshipRepository = productLocationRelationshipRepository;
+        this.addressRepository = addressRepository;
         this.distanceComputation = distanceComputation;
     }
 
@@ -31,8 +34,9 @@ public class GlobalConfig {
             case GREEDY:
                 return new GreedyStrategy(productLocationRelationshipRepository);
             case PROXIMITY:
-                return new ProximityStrategy(productLocationRelationshipRepository, distanceComputation);
+                return new ProximityStrategy(productLocationRelationshipRepository, addressRepository, distanceComputation);
         }
         throw new IllegalArgumentException();
     }
+
 }
